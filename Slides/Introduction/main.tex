@@ -1,0 +1,302 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{ODEs and DAEs}
+\subtitle{Contact-aware Control, Lecture 1}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item Motivation
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Ordinary Differential Equations}
+% \framesubtitle{Parameter estimation}
+\begin{flushleft}
+
+A general form of an \emph{n-th order ordinary differential equation} (ODE) is:
+
+\begin{equation}
+	F \left( \frac{d^n x}{dt^n}, ..., \frac{d x}{dt}, x, t  \right) = 0
+\end{equation}
+
+\bigskip
+
+Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
+
+\begin{equation}
+	\frac{d^n x}{dt^n} = f \left( \frac{d^{n-1} x}{dt^{n-1}}, ..., \frac{d x}{dt}, x, t  \right)
+\end{equation}
+
+\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Ordinary Differential Equations - examples}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Below we see two examples of an ODE in the general form:
+		
+		\begin{equation}
+			\dot x + \sin (x+1) = \sin(2t)
+		\end{equation}
+		
+		\begin{equation}
+			\dot x^3 + x = 0
+		\end{equation}
+	
+	...and two examples of ODEs in the normal form:
+		
+		\begin{equation}
+			\dot x = \sin(2t) - \sin (x+1) 
+		\end{equation}
+		
+		\begin{equation}
+			\ddot x = -5\dot x - 2 x
+		\end{equation}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Linear ODE}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		A general form of a \emph{linear} n-th order ODE is:
+		
+		\begin{equation}
+			a_n \frac{d^n x}{dt^n} + ... + a_1 \frac{d x}{dt} + a_0 x  = f(t)
+		\end{equation}
+		
+		\bigskip
+		
+		Note that it is trivial to transform general form linear ODE to the normal form:
+		
+		\begin{equation}
+			\frac{d^n x}{dt^n} = -\frac{a_{n-1}}{a_n } \frac{d^{n-1} x}{dt^{n-1}} - ... - \frac{a_1}{a_n }  \frac{d x}{dt} - \frac{a_0}{a_n } x  + \frac{1}{a_n }f(t)
+		\end{equation}
+	
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{ODE matrix form}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		A general form of a first order matrix ODE is:
+		
+		\begin{equation}
+			\label{eq:matrix_ODE_general_form}
+			\bo{F}(\dot{\bo{x}}, \bo{x}, t) = 0
+		\end{equation}
+		
+		\bigskip
+		
+		Normal form is:
+		
+		\begin{equation}
+			\dot{\bo{x}} = \bo{f}(\bo{x}, t)
+		\end{equation}
+	
+		If the ODE \eqref{eq:matrix_ODE_general_form} is linear with respect $\dot{\bo{x}}$ we could transform it into the normal form:
+		
+		\begin{equation}
+			\dot{\bo{x}} = - \bo{M}^{-1} \bo{F}(0, \bo{x}, t) 
+		\end{equation}
+		%
+		where $ \bo{M} = d\bo{F} / d\dot{\bo{x}}$.
+	
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{DAE matrix form}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		A general form of a first order matrix \emph{differential-algebraic equations} (DAE) is:
+		
+		\begin{equation}
+			\bo{F}(\dot{\bo{x}}, \bo{x}, t) = 0
+		\end{equation}
+		
+		where $\bo{M} = d\bo{F} / d\dot{\bo{x}}$ and it is either rectangular or $\text{det} (\bo{M}) = 0$.
+		
+		\bigskip
+		
+		\textcolor{mygrey}{
+		Let us observe how similar are DAE and general form ODEs.}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{DAE examples}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		DAE examples:
+		
+		\begin{align}
+		\begin{cases}
+						\dot x_1 + \dot x_2 + x_1 x_2 +  \sin(t) = 0\\
+						x_1 - x_2 = 0
+		\end{cases}
+		\end{align}
+		
+		\begin{align}
+			\begin{cases}
+				\dot x_1 + \dot x_2 - 7 = 0\\
+				\dot x_1 + \dot x_2 + x_1 + \cos(x_2) = 0
+			\end{cases}
+		\end{align}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{DAE with explicit algebraic variables}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		An normal form DAE with algebraic variables is:
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}} = \bo{f}(\bo{x}, \lambda, t) \\
+				\bo{g}(\bo{x}, t) = 0
+			\end{cases}
+		\end{equation}
+	
+		In this equation, $\lambda$ are algebraic variables, and $\bo{g}(\bo{x}, t) = 0$ are \emph{constraints}.
+		
+		\bigskip
+		
+		\textcolor{mygrey}{
+		Nothing prevents us from defining constraints as $\bo{g}(\dot{\bo{x}}, \bo{x}, t) = 0$, but the clarity of the definition will be lost.
+		}
+
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{DAE linear in algebraic variables, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		A DAE linear in algebraic variables is:
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{H}(\bo{x}, t) \lambda \\
+				\bo{g}(\bo{x}, t) = 0
+			\end{cases}
+		\end{equation}
+		
+		We could solve it by differentiating constraints and expressing $\dot{\bo{x}}$ and $\lambda$:
+		
+		\begin{equation}
+		\begin{cases}
+			\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{H}(\bo{x}, t) \lambda \\
+			\bo{G}(\bo{x}, t)\dot{\bo{x}} + \bo{g}_0(\bo{x}, t)  = 0
+		\end{cases}
+		\end{equation}
+	
+		where $\bo{G} = d\bo{g} / d\bo{x}$ and $\frac{d}{dt} \bo{g}(\bo{x}, t) - \bo{G}\dot{\bo{x}}$.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{DAE linear in algebraic variables, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		DAE can be re-written as:
+		
+		\begin{equation}
+			\begin{bmatrix}
+				\bo{I} & -\bo{H}(\bo{x}, t) \\
+				\bo{G}(\bo{x}, t) & 0
+			\end{bmatrix}
+		\begin{bmatrix}
+			\dot{\bo{x}} \\ \lambda
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			\bo{f}(\bo{x}, t) \\
+			-\bo{g}_0(\bo{x}, t)
+		\end{bmatrix}
+		\end{equation}
+		
+		Solving this system we can find $\dot{\bo{x}}$ and integrate it forward.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{DAE linear in algebraic variables, 3}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We could propose a more general form of the DAE linear in derivatives and algebraic variables:
+		
+		\begin{equation}
+			\begin{bmatrix}
+				\bo{M}(\bo{x}, t) & -\bo{H}(\bo{x}, t) \\
+				\bo{G}(\bo{x}, t) & 0
+			\end{bmatrix}
+			\begin{bmatrix}
+				\dot{\bo{x}} \\ \lambda
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				\bo{f}_0(\bo{x}, t) \\
+				-\bo{g}_0(\bo{x}, t)
+			\end{bmatrix}
+		\end{equation}
+		
+		where $\text{det} (\bo{M}) \neq 0$. 
+		
+		\bigskip
+		
+		We will find these types of systems in robotics. Inclusion of inertia matrix $\bo{M}$ does not change the process of solving the equation.
+		
+	\end{flushleft}
+\end{frame}
+
+
+\myqrframe
+
+\end{document}
