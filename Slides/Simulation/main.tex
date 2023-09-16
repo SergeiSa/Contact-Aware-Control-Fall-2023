@@ -1,0 +1,67 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{Simulation}
+\subtitle{Contact-aware Control, Lecture *}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item **
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Discrete constrained LTI}
+% \framesubtitle{Parameter estimation}
+\begin{flushleft}
+
+Given discrete constrained LTI:
+
+\begin{equation}
+\begin{cases}
+		\bo{x}_{i+1} = \bo{A}\bo{x}_i + \bo{B}\bo{u}_i + \bo{F}\lambda_i
+	\\
+	\bo{G}(\bo{x}_{i+1} - \bo{x}_i) = 0
+\end{cases}
+\end{equation}
+
+We can perform linear-fractional transformation:
+
+\begin{align}
+		\bo{G}((\bo{A} - \bo{I})\bo{x}_i + \bo{B}\bo{u}_i) + \bo{G}\bo{F}\lambda_i = 0 
+		\\
+		\lambda_i = - (\bo{G}\bo{F})^{-1}\bo{G}(\bo{A}\bo{x}_i + \bo{B}\bo{u}_i)
+		+
+		(\bo{G}\bo{F})^{-1}\bo{G}\bo{x}_i
+		\\
+		\bo{x}_{i+1} = (\bo{I} - \bo{F}(\bo{G}\bo{F})^{-1}\bo{G})(\bo{A}\bo{x}_i + \bo{B}\bo{u}_i)
+		+
+		\bo{F}(\bo{G}\bo{F})^{-1}\bo{G} \bo{x}_i
+\end{align}
+
+
+
+\end{flushleft}
+\end{frame}
+
+
+
+
+\myqrframe
+
+\end{document}

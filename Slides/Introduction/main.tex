@@ -18,7 +18,11 @@
 \begin{frame}{Content}
 
 \begin{itemize}
-\item Motivation
+\item ODEs - general and normal form
+\item linear ODEs
+\item vertor form ODEs
+\item DAE
+\item constraints and algebraic variables
 \end{itemize}
 
 \end{frame}
@@ -217,7 +221,7 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 		
 		\begin{equation}
 			\begin{cases}
-				\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{H}(\bo{x}, t) \lambda \\
+				\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{J}(\bo{x}, t) \lambda \\
 				\bo{g}(\bo{x}, t) = 0
 			\end{cases}
 		\end{equation}
@@ -226,7 +230,7 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 		
 		\begin{equation}
 		\begin{cases}
-			\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{H}(\bo{x}, t) \lambda \\
+			\dot{\bo{x}} = \bo{f}(\bo{x}, t) + \bo{J}(\bo{x}, t) \lambda \\
 			\bo{G}(\bo{x}, t)\dot{\bo{x}} + \bo{g}_0(\bo{x}, t)  = 0
 		\end{cases}
 		\end{equation}
@@ -246,7 +250,7 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 		
 		\begin{equation}
 			\begin{bmatrix}
-				\bo{I} & -\bo{H}(\bo{x}, t) \\
+				\bo{I} & -\bo{J}(\bo{x}, t) \\
 				\bo{G}(\bo{x}, t) & 0
 			\end{bmatrix}
 		\begin{bmatrix}
@@ -259,10 +263,34 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 		\end{bmatrix}
 		\end{equation}
 		
-		Solving this system we can find $\dot{\bo{x}}$ and integrate it forward.
+		If the matrix on the left-hand side is invertible, we can find $\dot{\bo{x}}$ and integrate it forward:
+		
+		\begin{equation}
+			\begin{bmatrix}
+				\dot{\bo{x}} \\ \lambda
+			\end{bmatrix}
+		=
+		\begin{bmatrix}
+			\bo{I} - \bo{J}(\bo{G}\bo{J})^{-1}\bo{G}
+			& 
+			\bo{J}(\bo{G}\bo{J})^{-1}
+			\\
+			-(\bo{G}\bo{J})^{-1}\bo{G}
+			& 
+			(\bo{G}\bo{J})^{-1}
+		\end{bmatrix}
+			\begin{bmatrix}
+				\bo{f}(\bo{x}, t) \\
+				-\bo{g}_0(\bo{x}, t)
+			\end{bmatrix}
+		\end{equation}
+		
+		For the lhs matrix to me invertible, the matrix $(\bo{G}\bo{J})$ needs to be full rank.
 		
 	\end{flushleft}
 \end{frame}
+
+
 
 
 
@@ -270,11 +298,28 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 	% \framesubtitle{Parameter estimation}
 	\begin{flushleft}
 		
+		Invertability of the lhs matrix has implications:
+		
+		\begin{itemize}
+			\item There exists one and only one $(\dot{\bo{x}}, \lambda)$ pair that satisfy both the differential and algebraic constraints.
+			
+			\item We can exclude algebraic variables $\lambda$ from the problem.
+		\end{itemize}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{DAE linear in algebraic variables, 4}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
 		We could propose a more general form of the DAE linear in derivatives and algebraic variables:
 		
 		\begin{equation}
 			\begin{bmatrix}
-				\bo{M}(\bo{x}, t) & -\bo{H}(\bo{x}, t) \\
+				\bo{M}(\bo{x}, t) & -\bo{J}(\bo{x}, t) \\
 				\bo{G}(\bo{x}, t) & 0
 			\end{bmatrix}
 			\begin{bmatrix}
@@ -291,11 +336,39 @@ Notice that $x(t)$ is a scalar variable. A normal form of an ODE is:
 		
 		\bigskip
 		
-		We will find these types of systems in robotics. Inclusion of inertia matrix $\bo{M}$ does not change the process of solving the equation.
+		We will find these types of systems in robotics. Inclusion of inertia matrix $\bo{M}$ does not change the process of solving the equation. It does influence the analytic form of the block matrix inverse though.
 		
 	\end{flushleft}
 \end{frame}
 
+
+
+
+\begin{frame}{more DAE examples}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		DAE with algebraic variables - examples:
+		
+		\begin{align}
+			\begin{cases}
+				\dot x_1 = x_1 + 5 x_2 - \lambda\\
+				\dot x_2 = -2x_1 + x_2 + \lambda\\
+				2 x_1 - x_2 = 0
+			\end{cases}
+		\end{align}
+		
+		\begin{align}
+			\begin{cases}
+				\dot x_1 = 10x_1 + 15 x_2 - \lambda_1 + \lambda_2 \\
+				\dot x_2 = x_1 + 5x_2 + \lambda_2 \\
+				3 x_1 + 7 x_2 = 0
+			\end{cases}
+		\end{align}
+		
+		
+	\end{flushleft}
+\end{frame}
 
 \myqrframe
 
