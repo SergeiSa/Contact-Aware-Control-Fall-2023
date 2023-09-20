@@ -26,61 +26,17 @@ jobs:
           root_file: main.tex
           working_directory: Slides/Introduction/
 
-      - name: Compile LaTeX document Constraints
+      - name: Compile LaTeX document MechanicalEquations
         uses: xu-cheng/latex-action@master
         with:
           root_file: main.tex
-          working_directory: Slides/Constraints/
+          working_directory: Slides/MechanicalEquations/
 
-      - name: Compile LaTeX document Mechanical_Equations_for_Systems_with_Constraints
+      - name: Compile LaTeX document Projectors
         uses: xu-cheng/latex-action@master
         with:
           root_file: main.tex
-          working_directory: Slides/Mechanical_Equations_for_Systems_with_Constraints/
-
-      - name: Compile LaTeX document Manipulator_Equations_for_Systems_with_Constraints
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Manipulator_Equations_for_Systems_with_Constraints/
-
-      - name: Compile LaTeX document Solving_equations_with_constraints
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Solving_equations_with_constraints/
-
-      - name: Compile LaTeX document Control_error_dynamics
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Control_error_dynamics/
-
-      - name: Compile LaTeX document Unilateral_constraints_friction_cone
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Unilateral_constraints_friction_cone/
-
-      - name: Compile LaTeX document Control_with_QP_and_SOCP
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Control_with_QP_and_SOCP/
-
-      - name: Compile LaTeX document Constrained_LQR
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Constrained_LQR/
-
-      - name: Compile LaTeX document Switching_dynamics_with_MICP
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
-          working_directory: Slides/Switching_dynamics_with_MICP/
-
-
+          working_directory: Slides/Projectors/
 
 
 
@@ -90,78 +46,30 @@ jobs:
           name: Introduction.pdf
           path: Slides/Introduction/main.pdf 
 
-      - name: Save Constraints artifact
+      - name: Save MechanicalEquations artifact
         uses: actions/upload-artifact@v1
         with:
-          name: Constraints.pdf
-          path: Slides/Constraints/main.pdf 
+          name: MechanicalEquations.pdf
+          path: Slides/MechanicalEquations/main.pdf 
 
-      - name: Save Mechanical_Equations_for_Systems_with_Constraints
+      - name: Save Projectors
         uses: actions/upload-artifact@v1
         with:
-          name: Mechanical_Equations_for_Systems_with_Constraints.pdf
-          path: Slides/Mechanical_Equations_for_Systems_with_Constraints/main.pdf      
+          name: Projectors.pdf
+          path: Slides/Projectors/main.pdf      
 
-      - name: Save Manipulator_Equations_for_Systems_with_Constraints artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Manipulator_Equations_for_Systems_with_Constraints.pdf
-          path: Slides/Manipulator_Equations_for_Systems_with_Constraints/main.pdf         
 
-      - name: Save Solving_equations_with_constraints artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Solving_equations_with_constraints.pdf
-          path: Slides/Solving_equations_with_constraints/main.pdf              
 
-      - name: Save Control_error_dynamics artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Control_error_dynamics.pdf
-          path: Slides/Control_error_dynamics/main.pdf     
 
-      - name: Save Unilateral_constraints_friction_cone artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Unilateral_constraints_friction_cone.pdf
-          path: Slides/Unilateral_constraints_friction_cone/main.pdf                     
-
-      - name: Save Control_with_QP_and_SOCP artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Control_with_QP_and_SOCP.pdf
-          path: Slides/Control_with_QP_and_SOCP/main.pdf                                
-
-      - name: Save Constrained_LQR artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Constrained_LQR.pdf
-          path: Slides/Constrained_LQR/main.pdf                                     
-
-      - name: Save Switching_dynamics_with_MICP artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: Switching_dynamics_with_MICP.pdf
-          path: Slides/Switching_dynamics_with_MICP/main.pdf             
-          
-          
-          
-          
       - name: Update compiled PDFs in git repository
         if: github.event.pull_request.merged == true || github.event_name == 'push'
         run: |
           git config --global user.name 'CI PDF compiler'
           git config --global user.email '<>'
           git add Slides/Introduction/main.pdf
-          git add Slides/Constraints/main.pdf
-          git add Slides/Mechanical_Equations_for_Systems_with_Constraints/main.pdf
-          git add Slides/Manipulator_Equations_for_Systems_with_Constraints/main.pdf
-          git add Slides/Solving_equations_with_constraints/main.pdf
-          git add Slides/Control_error_dynamics/main.pdf
-          git add Slides/Unilateral_constraints_friction_cone/main.pdf
-          git add Slides/Control_with_QP_and_SOCP/main.pdf
-          git add Slides/Constrained_LQR/main.pdf
-          git add Slides/Switching_dynamics_with_MICP/main.pdf
+          git add Slides/MechanicalEquations/main.pdf
+          git add Slides/Projectors/main.pdf
           
           git commit -m "Update compiled PDFs"
           git push
+

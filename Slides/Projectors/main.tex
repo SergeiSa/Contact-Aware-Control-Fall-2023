@@ -1,0 +1,325 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{Forward Dynamics, Projectors}
+\subtitle{Contact-aware Control, Lecture 3}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item ***
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Manipulator DAE}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		The differential-algebraic manipulator equations:
+		
+		\begin{equation}
+			\begin{bmatrix}
+				\bo{H} & -\bo{J}\T \\
+				\bo{J} & 0
+			\end{bmatrix}
+			\begin{bmatrix}
+				\ddot{\bo{q}} \\
+				\lambda
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				\tau - \bo{C} \dot{\bo{q}} - \bo{g} \\
+				-\dot{\bo{J}} \dot{\bo{q}}
+			\end{bmatrix}
+		\end{equation}
+	 %
+		have explicit solution if the Schur compliment $\bo{J}\T \bo{H}^{-1}\bo{J}$ is full rank:
+		
+		\begin{equation}
+			\begin{bmatrix}
+				\ddot{\bo{q}} \\
+				\lambda
+			\end{bmatrix}
+		=
+		\begin{bmatrix}
+			\bo{H}^{-1}-\bo{H}^{-1} \bo{J}\T \bo{H}_J \bo{J} \bo{H}^{-1} &
+			 \bo{H}^{-1} \bo{J}\T \bo{H}_J \\
+			-\bo{H}_J \bo{J} \bo{H}^{-1} & \bo{H}_J
+		\end{bmatrix}
+			\begin{bmatrix}
+				\tau - \bo{C} \dot{\bo{q}} - \bo{g} \\
+				-\dot{\bo{J}} \dot{\bo{q}}
+			\end{bmatrix}
+		\end{equation}
+		%
+		where $\bo{H}_J = ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}$.
+				
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Manipulator DAE solution}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		The solution can be written out block-wise:
+		%
+		\begin{block}{Analytic solution:}
+			\begin{align}
+				\ddot{\bo{q}}
+				&=
+				(\bo{I}-\bo{H}^{-1} \bo{J}\T \bo{H}_J \bo{J} ) \bo{H}^{-1}(\tau - \bo{C} \dot{\bo{q}} - \bo{g}) 
+				-
+				\bo{H}^{-1} \bo{J}\T \bo{H}_J \dot{\bo{J}} \dot{\bo{q}}
+				\\
+				\lambda
+				&=
+				-\bo{H}_J \bo{J} \bo{H}^{-1} (\tau - \bo{C} \dot{\bo{q}} - \bo{g})
+				-
+				\bo{H}_J \dot{\bo{J}} \dot{\bo{q}}
+			\end{align}
+		\end{block}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Schur Projector, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Substituting expression for $\lambda$ into dynamical equation $\bo{H}\ddot{\bo{q}} - \bo{J}\T\lambda
+		=
+		-\bo{h}$, where $\bo{h} =  \bo{C} \dot{\bo{q}} + \bo{g} - \tau$ we get:
+		
+		\begin{align}
+			\bo{H}\ddot{\bo{q}} + 
+			\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1} (-\bo{h}) +
+			\bo{J}\T \bo{H}_J \dot{\bo{J}} \dot{\bo{q}}
+			=
+			(-\bo{h})
+			\\
+			\textcolor{myblue}
+			{\bo{H}\ddot{\bo{q}} + 
+			(\bo{I}-
+			\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1}) \bo{h} +
+			\bo{J}\T \bo{H}_J \dot{\bo{J}} \dot{\bo{q}}
+			=
+			0}
+		\end{align}
+		
+		Let us consider the following equation:
+		%
+		\begin{align}
+			(\bo{I}-
+			\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1})(\bo{H}\ddot{\bo{q}}+\bo{h})=0
+			\\
+			\bo{H}\ddot{\bo{q}} - \bo{J}\T\bo{H}_J \bo{J} \ddot{\bo{q}}
+			+
+			(\bo{I}-
+			\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1})\bo{h} = 0
+		\end{align}
+		
+		Since we know $\bo{J} \ddot{\bo{q}} = -\dot{\bo{J}} \dot{\bo{q}}$:
+		%
+		\begin{align}
+			\textcolor{myblue}{
+			\bo{H}\ddot{\bo{q}} + (\bo{I}-\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1})\bo{h} + \bo{J}\T\bo{H}_J \dot{\bo{J}} \dot{\bo{q}} = 0}
+		\end{align}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Schur Projector, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+
+Thus, the dynamics can be re-written as: 
+
+		\begin{align}
+			\bo{P}_S(\bo{H}\ddot{\bo{q}}+\bo{h})=0
+		\end{align}
+	%
+	where $\bo{P}_S = \bo{I}-\bo{J}\T\bo{H}_J \bo{J} \bo{H}^{-1} = 
+	\bo{I}-\bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1} \bo{J} \bo{H}^{-1}$ is what we can call a Schur projector.
+	
+	\bigskip
+	
+	The projector  $\bo{P}_S$ does not change the number of equations, but it projects the dynamic onto the constraint manifold; it allows us to discard the reaction forces.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Linear Algebraic Equations}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Let us remember that a solution to any non-homogeneous (affine) linear equation $\bo{A} \bo{x} = \bo{b}$, $\bo{x} \in \R^n$ is a sum of a \emph{particular solution} and a \emph{null-space solution}:
+		%
+		\begin{align}
+			\bo{x} = \textcolor{myblue}{\bo{A}^+\bo{b}}
+			 +
+			 \textcolor{mydarkgreen}{(\bo{I}- \bo{A}^+\bo{A})\bo{x}_0} 
+		\end{align}
+		%
+		where $\bo{x}_0 \in \R^n$ is an arbitrary number.
+		
+		\begin{itemize}
+			\item $\textcolor{myblue}{\bo{A}^+\bo{b}}$ is a particular solution. It is a smallest-norm solution to the original equation. There is one and only one particular solution, it lies in the row space of $\bo{A}$.
+			
+			\item $\textcolor{mydarkgreen}{(\bo{I}- \bo{A}^+\bo{A})\bo{x}_0}$ is a null space solution. There exist a $k$-dimensional space of null space solutions, where $k$ is the dimension of the null space of $\bo{A}$. If $\bo{A}\in \R^{n, n}$, its rank is $n-k$. The matrix $(\bo{I}- \bo{A}^+\bo{A})$ is a null space projector.
+		\end{itemize}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Manipulator DAE solution, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		\textcolor{mygrey}{
+		\begin{align}
+			\ddot{\bo{q}}
+			=
+			(\bo{I}-\textcolor{myturquoise}{\bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}} \bo{J})
+			 \textcolor{mylightblue}{\bo{H}^{-1}(\tau - \bo{C} \dot{\bo{q}} - \bo{g})} 
+			-\\
+			-
+			\textcolor{myturquoise}{\bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}} \dot{\bo{J}} \dot{\bo{q}}
+		\end{align}
+	}
+		
+		Looking at the gen. acceleration solution, we recognize:
+		
+		\begin{itemize}
+			\item Quantity $\bo{a} = \textcolor{mylightblue}{\bo{H}^{-1}(\tau - \bo{C} \dot{\bo{q}} - \bo{g})}$ is the solution (only one exists) to the unconstrained manipulator dynamics $\bo{H}\bo{a} + \bo{C} \dot{\bo{q}} + \bo{g} = \tau$.
+			
+			\item Quantity $\bo{J}^\# = \textcolor{myturquoise}{\bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}}$ is a weighted pseudo-inverse of $\bo{J}$ \textcolor{mygrey}{\small{(prove it for extra points)}}.
+			
+			\item Quantity $\bo{J}^\# \dot{\bo{J}} \dot{\bo{q}}$ is related to particular solution of the constraint equation $\bo{J} \ddot{\bo{q}} = - \dot{\bo{J}} \dot{\bo{q}}$.
+		\end{itemize}
+		
+		
+		\textcolor{mygrey}{
+			\begin{align}
+				\ddot{\bo{q}}
+				=
+				(\bo{I}-\bo{J}^\# \bo{J})
+				\bo{a}
+				-
+				\bo{J}^\# \dot{\bo{J}} \dot{\bo{q}}
+			\end{align}
+		}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{QR projection, 1}
+%	\framesubtitle{Manipulator equations}
+	\begin{flushleft}
+		
+		For a constrained mechanical system we can solve inverse dynamics without the need for linearization. Consider the following dynamics:
+		
+		\begin{equation}
+			\mathbf{H}\ddot{\mathbf{q}} + \bo{h} = \mathbf{J}^\top \lambda
+		\end{equation}
+		%
+		
+		where $\bo{h} =  \mathbf{C}\dot{\mathbf{q}} + \mathbf{g} - \tau$. We can represent constraint Jacobian $\mathbf{J}^\top$ as its QR decomposition: $\mathbf{J}^\top = \mathbf{Q} \begin{bmatrix} \mathbf{R} \\ \mathbf{0}  \end{bmatrix}$, where $\mathbf{Q}^\top \mathbf{Q} = \mathbf{Q} \mathbf{Q}^\top = \mathbf{I}$ and $\mathbf{R}$ is convertible.
+		
+		\begin{equation}
+			\mathbf{H}\ddot{\mathbf{q}} + \bo{h} = \mathbf{Q} \begin{bmatrix} \mathbf{R} \\ \mathbf{0}  \end{bmatrix} \lambda
+		\end{equation}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{QR projection, 2}
+%	\framesubtitle{Manipulator equations, part 2}
+	\begin{flushleft}
+		
+		Let us multiply the equation by $\mathbf{Q}^\top$:
+		
+		\begin{equation}
+			\mathbf{Q}^\top (\mathbf{H}\ddot{\mathbf{q}} + \bo{h}) = \begin{bmatrix} \mathbf{R} \\ \mathbf{0}  \end{bmatrix} \lambda
+		\end{equation}
+		
+		Introducing switching variables (to divide upper and lower part of the equations) $\mathbf{S}_1 = \begin{bmatrix} \mathbf{I} & \mathbf{0}  \end{bmatrix}$ and $\mathbf{S}_2 = \begin{bmatrix} \mathbf{0} & \mathbf{I}  \end{bmatrix}$ and multiplying equations by one and the other we get two systems:
+		
+		\begin{equation}
+			\begin{cases}
+				\mathbf{S}_1 \mathbf{Q}^\top (\mathbf{H}\ddot{\mathbf{q}} + \bo{h}) =\mathbf{R} \lambda 
+				\\
+				\mathbf{S}_2 \mathbf{Q}^\top (\mathbf{H}\ddot{\mathbf{q}} + \bo{h}) = 0
+			\end{cases}
+		\end{equation}
+		
+		The main advantage we achieved is that now we can calculate both $\mathbf{u}$ and $\lambda$
+		
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{QR projector}
+	%	\framesubtitle{Manipulator equations, part 2}
+	\begin{flushleft}
+		
+		Considering equation $\mathbf{S}_2 \mathbf{Q}^\top (\mathbf{H}\ddot{\mathbf{q}} + \bo{h}) = 0$ we can re-write it as:
+		%
+		\begin{align}
+				\bo{P}_{QR} (\mathbf{H}\ddot{\mathbf{q}} + \bo{h}) = 0
+		\end{align}
+	%
+		where $\bo{P}_{QR} = \mathbf{S}_2 \mathbf{Q}^\top$ is a QR projector. Note a similarity of the way $\bo{P}_{QR}$ and $\bo{P}_S$ act on the mechanical equations.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Read more}
+	
+	\begin{itemize}
+		
+		\item Righetti, L., Buchli, J., Mistry, M. and Schaal, S., 2011, May. Inverse dynamics control of floating-base robots with external constraints: A unified view. In 2011 IEEE international conference on robotics and automation (pp. 1085-1090). IEEE. - \bref{https://drive.google.com/file/d/17lnZGk7TSr0wB47yHZYVzbWgN5kDS0RG/view}{Inverse Dynamics Control of Floating-Base Robots with External
+			Constraints: a Unified View.}
+		
+		\item Mistry, M., Buchli, J. and Schaal, S., 2010, May. Inverse dynamics control of floating base systems using orthogonal decomposition. In 2010 IEEE international conference on robotics and automation (pp. 3406-3412). IEEE. - \bref{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.212.3601&rep=rep1&type=pdf}{citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.212.3601}.
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\myqrframe
+
+\end{document}
