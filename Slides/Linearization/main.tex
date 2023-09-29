@@ -1,0 +1,384 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{Linearization, Control}
+\subtitle{Contact-aware Control, Lecture 5}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item ***
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{LTI system with explicit constraints}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		LTI system with explicit constraints (EC-LTI) can be presented in the following form:
+		
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}}=\bo{A}\bo{x}+\bo{B}\bo{u}+\bo{F}\lambda 
+				\\
+				\bo{G}\dot{\bo{x}}=0
+			\end{cases}
+		\end{equation}
+		%
+		where $\bo{G}\dot{\bo{x}}=0$ is the constraints equation.
+	
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{Linear-fractional transformation}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Substituting $\dot{\bo{x}}=\bo{A}\bo{x}+\bo{B}\bo{u}+\bo{F}\lambda $ into the constraints equation $\bo{G}\dot{\bo{x}}=0$ we get:
+		%
+		\begin{align}
+			\bo{G}(\bo{A}\bo{x}+\bo{B}\bo{u}+\bo{F}\lambda )=0
+			\\
+			\bo{G}\bo{F}\lambda =-\bo{G}(\bo{A}\bo{x}+\bo{B}\bo{u})
+			\\
+			\lambda =-(\bo{G}\bo{F})^+\bo{G}(\bo{A}\bo{x}+\bo{B}\bo{u})
+			\\
+			\dot{\bo{x}}=\bo{A}\bo{x}+\bo{B}\bo{u}-\bo{F}(\bo{G}\bo{F})^+\bo{G}(\bo{A}\bo{x}+\bo{B}
+			\\
+			\dot{\bo{x}}=(\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})(\bo{A}\bo{x}+\bo{B}\bo{u})
+		\end{align}
+		
+		Defining $\bo{A}_c = (\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})\bo{A}$ and $\bo{B}_c = (\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})\bo{B}$, we obtain LTI system with implicit constraints (IC-LTI):
+		%
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}}=\bo{A}_c\bo{x}+\bo{B}_c\bo{u}
+				\\
+				\bo{G}\dot{\bo{x}}=0
+			\end{cases}
+		\end{equation}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{LTI system with implicit constraints}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		\textcolor{mygrey}{
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}}=\bo{A}_c\bo{x}+\bo{B}_c\bo{u}
+				\\
+				\bo{G}\dot{\bo{x}}=0
+			\end{cases}
+		\end{equation}
+		}
+
+		Note that IC-LTI is similar in form to regular LTI $\dot{\bo{x}}=\bo{A}\bo{x}+\bo{B}\bo{u}$. This reminds us of the use of projectors in manipulator equations. Expression $(\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})$ acts in a similar ways to projectors.
+
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Linearization, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can linearize dynamical system with constraints. Let us remember that linearization is done by Taylor expansion, taking into account the first term. For systems with constraints, we need to apply Taylor expansion to the expression for $\ddot{\bo{q}}$: 
+		
+		\begin{align}
+			\ddot{\bo{q}}
+			=
+			\bo{f}(\bo{q},  \dot{\bo{q}}, \bo{u})
+			=
+			(\bo{I}-\bo{J}^\# \bo{J})
+			\bo{H}^{-1}(\bo{T}\bo{u} - \bo{C} \dot{\bo{q}} - \bo{g})
+			-
+			\bo{J}^\# \dot{\bo{J}} \dot{\bo{q}}
+		\end{align}
+	%
+	where $\bo{J}^\# = \bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}$.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Linearization, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Taylor expansion becomes:
+		
+		\begin{align*}
+			\ddot{\bo{q}}
+			=
+			\bo{f}(\bo{q}_0,  \dot{\bo{q}}_0, \bo{u}_0)
+			+
+			\frac{\partial \bo{f}}{\partial \bo{q}}
+			(\bo{q}-\bo{q}_0)
+			+
+			\frac{\partial \bo{f}}{\partial \dot{\bo{q}}}
+			(\dot{\bo{q}}-\dot{\bo{q}}_0)
+			+
+			\frac{\partial \bo{f}}{\partial \bo{u}}
+			(\bo{u}-\bo{u}_0)
+			+
+			\text{h.o.t.}
+		\end{align*}
+	
+		Defining $\bo{A}_q = \frac{\partial \bo{f}}{\partial \bo{q}}$ and $\bo{A}_v = \frac{\partial \bo{f}}{\partial \dot{\bo{q}}}$, $\bo{B} = \frac{\partial \bo{f}}{\partial \bo{u}}$, and proposing state variable $\bo{x} = \begin{bmatrix}
+			\bo{q} \\ \dot{\bo{q}}
+		\end{bmatrix}$
+	
+	\begin{align}
+		\dot{\bo{x}} = 
+		\begin{bmatrix}
+			0 & \bo{I} \\
+			\bo{A}_q & \bo{A}_v
+		\end{bmatrix}
+	\bo{x}
+	+
+	\begin{bmatrix}
+		0 \\
+		\bo{B}
+	\end{bmatrix}
+	\bo{u}
+	+
+	\text{const}
+	\end{align}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Linearization, 3}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Constraint equation $\bo{J} \ddot{\bo{q}} + \dot{\bo{J}} \dot{\bo{q}}= 0$ becomes:
+		%
+		\begin{align}
+			\begin{bmatrix}
+				\bo{J}  & 0 \\
+				\dot{\bo{J}} & \bo{J}
+			\end{bmatrix}
+		\dot{\bo{x}}
+		= 0
+		\end{align}
+		%
+		Linearized system then becomes:
+		%
+			\begin{align}
+				\begin{cases}
+					\dot{\bo{x}} = 
+					\begin{bmatrix}
+						0 & \bo{I} \\
+						\bo{A}_q & \bo{A}_v
+					\end{bmatrix}
+					\bo{x}
+					+
+					\begin{bmatrix}
+						0 \\
+						\bo{B}
+					\end{bmatrix}
+					\bo{u}
+					+
+					\text{const}
+					\\
+					\begin{bmatrix}
+						\bo{J}  & 0 \\
+						\dot{\bo{J}} & \bo{J}
+					\end{bmatrix}
+					\dot{\bo{x}}
+					= 0
+				\end{cases}
+		\end{align}
+	
+	Noticed that this is an implicit constrained LTI.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Orthogonal decomposition, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can find orthonormal basis $\bo{N}$ in the null space of the constraints matrix $\bo{G}$, and orthonormal basis $\bo{R}$ in the row space of the same matrix.
+		%
+			\begin{align}
+				\bo{N} = \text{null}(\bo{G}) \\
+				\bo{R} = \text{row}(\bo{G})
+			\end{align}
+		
+		Since matrices $\bo{N}$ and $\bo{R}$ are orthogonal compliment of each other, the matrix $\begin{bmatrix}
+			\bo{N} & \bo{R}
+		\end{bmatrix}$ is full rank.
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Orthogonal decomposition, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can define new variables $\bo{z}$ and $\zeta$, which have the following relation with $\bo{x}$:
+		%
+			\begin{align}
+				\bo{x} = 
+				\begin{bmatrix}
+					\bo{N} & \bo{R}
+				\end{bmatrix}
+				\begin{bmatrix}
+					\bo{z} \\ \zeta
+				\end{bmatrix}
+			\end{align}		
+		
+		Because $\begin{bmatrix}
+			\bo{N} & \bo{R}
+		\end{bmatrix}$ is full rank, there is a one-to-one correspondence between variables $\bo{z}$ and $\zeta$ and $\bo{x}$. In fact:
+	
+		\begin{align}
+			\bo{z} = \bo{N}\T \bo{x} \\
+			\zeta = \bo{R}\T \bo{x} 
+		\end{align}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Orthogonal decomposition, 3}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Since $\bo{G} \dot{\bo{x}} = 0$, it follows that $\dot{\bo{x}} \in \text{null}(\bo{G})$. Therefore $\bo{R}\T \dot{\bo{x}} = \dot \zeta =  0$ and $\bo{N}\T \dot{\bo{x}} = \dot{\bo{z}}$:
+		%
+		\begin{align}
+			\dot{\bo{x}} = \begin{bmatrix}
+				\bo{N} & \bo{R}
+			\end{bmatrix}
+			\begin{bmatrix}
+		 		\dot{\bo{z}} \\ \dot \zeta
+			\end{bmatrix} = \bo{N}\dot{\bo{z}}
+		\end{align}
+		
+		This implies that $\dot{\bo{x}}$ lies in the column space of $\bo{N}$.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Orthogonal projection}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can multiply equation $\dot{\bo{x}}=\bo{A}_c\bo{x}+\bo{B}_c\bo{u}$ by $\bo{N}\T$. Since $\dot{\bo{x}}$ lies in the column space of $\bo{N}$, we do not lose any component of the dynamics:
+		%
+		\begin{equation}
+			\bo{N}\T\dot{\bo{x}}=\bo{N}\T\bo{A}_c\bo{x}+\bo{N}\T\bo{B}_c\bo{u}
+		\end{equation}
+	
+		Since $\bo{x} = \bo{N} \bo{z} + \bo{R} \zeta$ and $\bo{N}\T \dot{\bo{x}} = \dot{\bo{z}}$ we get:
+		%
+		\begin{equation}
+			\dot{\bo{z}}=\bo{N}\T\bo{A}_c\bo{N} \bo{z} + \bo{N}\T\bo{A}_c\bo{R} \zeta+\bo{N}\T\bo{B}_c\bo{u}
+		\end{equation}
+		
+		We can define $\bo{A}_N = \bo{N}\T\bo{A}_c\bo{N}$, $\bo{A}_R = \bo{N}\T\bo{A}_c\bo{R}$ and $\bo{B}_N = \bo{N}\T\bo{B}_c$:
+		%
+		\begin{equation}
+			\dot{\bo{z}}=\bo{A}_N\bo{z} + \bo{A}_R \zeta+\bo{B}_N\bo{u}
+		\end{equation}
+		
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Feedback control}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Given equation $\dot{\bo{z}}=\bo{A}_N\bo{z} + \bo{A}_R \zeta+\bo{B}_N\bo{u}$ we can find stabilizing control. Since $\bo{A}_R \zeta = \text{const}$, this is equivalent to stabilizing the system $\dot{\bo{z}}=\bo{A}_N\bo{z} + \bo{B}_N\bo{u}$.
+		
+		\bigskip
+		
+		Consider linear control law:
+		
+		\begin{equation}
+			\bo{u} = -\bo{K}\bo{z}
+		\end{equation}
+		
+		Then dynamics becomes:
+		
+		\begin{equation}
+			\dot{\bo{z}}=(\bo{A}_N - \bo{B}_N\bo{K})\bo{z} + \bo{A}_R \zeta
+		\end{equation}
+	
+		As long at the state matrix $\bo{A}_N - \bo{B}_N\bo{K}$ is Hurwitz, the system is stable. This can be achieved with, e.g. pole placement.
+	
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{LQR}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		With that, we could pose LQR problem for the system 
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Read more}
+	
+	\begin{itemize}
+		
+		\item ***
+		
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\myqrframe
+
+\end{document}

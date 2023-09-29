@@ -18,7 +18,9 @@
 \begin{frame}{Content}
 
 \begin{itemize}
-\item ***
+\item Solution to Manipulator DAE
+\item Schur Projector
+\item QR Projector
 \end{itemize}
 
 \end{frame}
@@ -203,7 +205,7 @@ Thus, the dynamics can be re-written as:
 	\begin{flushleft}
 		
 		\textcolor{mygrey}{
-		\begin{align}
+		\begin{align*}
 			\ddot{\bo{q}}
 			=
 			(\bo{I}-\textcolor{myturquoise}{\bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}} \bo{J})
@@ -211,7 +213,7 @@ Thus, the dynamics can be re-written as:
 			-\\
 			-
 			\textcolor{myturquoise}{\bo{H}^{-1} \bo{J}\T ( \bo{J} \bo{H}^{-1} \bo{J}\T )^{-1}} \dot{\bo{J}} \dot{\bo{q}}
-		\end{align}
+		\end{align*}
 	}
 		
 		Looking at the gen. acceleration solution, we recognize:
@@ -245,7 +247,7 @@ Thus, the dynamics can be re-written as:
 %	\framesubtitle{Manipulator equations}
 	\begin{flushleft}
 		
-		For a constrained mechanical system we can solve inverse dynamics without the need for linearization. Consider the following dynamics:
+	Consider constrained dynamics:
 		
 		\begin{equation}
 			\mathbf{H}\ddot{\mathbf{q}} + \bo{h} = \mathbf{J}^\top \lambda
@@ -283,7 +285,7 @@ Thus, the dynamics can be re-written as:
 			\end{cases}
 		\end{equation}
 		
-		The main advantage we achieved is that now we can calculate both $\mathbf{u}$ and $\lambda$
+		The main advantage we achieved is that now we can calculate both $\ddot{\mathbf{q}}$ and $\lambda$
 		
 	\end{flushleft}
 \end{frame}
