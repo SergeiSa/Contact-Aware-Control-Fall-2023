@@ -46,7 +46,7 @@
 		\bigskip
 		
 		\begin{block}{Inverse Dynamics}
-			Forward Dynamics for a system $\mathcal{G}$ is a problem of finding control input $\bo{u}$ given state $(\bo{q}, \dot{\bo{q}})$ and the desired value of the highest order derivative $\ddot{\bo{q}}$.
+			Inverse Dynamics for a system $\mathcal{G}$ is a problem of finding control input $\bo{u}$ given state $(\bo{q}, \dot{\bo{q}})$ and the desired value of the highest order derivative $\ddot{\bo{q}}$.
 		\end{block} 
 	
 	\end{flushleft}
@@ -88,22 +88,22 @@
 
 
 
-\begin{frame}{Inverse dynamics - constrained systems}
-	% \framesubtitle{Parameter estimation}
-	\begin{flushleft}
-		
-		Given a system $\mathcal{G}$ with $n$ generalized coordinates, $m$ control inputs and $k$ independent constraints, we can observe the following three scenarios regarding its inverse dynamics:
-		
-		\begin{enumerate}
-			\item The system can be underactuated. This usually happens when $n > m+k$, but more generally it means that for a state $(\bo{q}, \dot{\bo{q}})$ there exit accelerations that the system cannot produce. We can expect Inverse Dynamics (ID) to have no solution, or one solution only.
-			
-			\item  The system is fully-actuated. This usually happens when $n = m+k$. We can expect ID to have one and only one solution.
-			
-			\item The system is over-actuated (overconstrained, redundant). This usually happens when $n < m+k$, but more generally it means that for a state $(\bo{q}, \dot{\bo{q}})$ there exit more than one $\bo{u}$ that achieve the desired acceleration.  We can expect ID to have infinitely many solutions, dimensions of the solution space is often equal to $m+k-n$.
-		\end{enumerate}
-		
-	\end{flushleft}
-\end{frame}
+%\begin{frame}{Inverse dynamics - constrained systems}
+%	% \framesubtitle{Parameter estimation}
+%	\begin{flushleft}
+%		
+%		Given a system $\mathcal{G}$ with $n$ generalized coordinates, $m$ control inputs and $k$ independent constraints, we can observe the following three scenarios regarding its inverse dynamics:
+%		
+%		\begin{enumerate}
+%			\item The system can be underactuated. This usually happens when $n > m+k$, but more generally it means that for a state $(\bo{q}, \dot{\bo{q}})$ there exit accelerations that the system cannot produce. We can expect Inverse Dynamics (ID) to have no solution, or one solution only.
+%			
+%			\item  The system is fully-actuated. This usually happens when $n = m+k$. We can expect ID to have one and only one solution.
+%			
+%			\item The system is over-actuated (overconstrained, redundant). This usually happens when $n < m+k$, but more generally it means that for a state $(\bo{q}, \dot{\bo{q}})$ there exit more than one $\bo{u}$ that achieve the desired acceleration.  We can expect ID to have infinitely many solutions, dimensions of the solution space is often equal to $m+k-n$.
+%		\end{enumerate}
+%		
+%	\end{flushleft}
+%\end{frame}
 
 
 
@@ -143,7 +143,7 @@ let us assume that $\bo{h} = \bo{C}\dot{\bo{q}} + \bo{g} - \bo{T}\bo{u}$, where 
 		\begin{align}
 			\bo{u}
 			=
-			(\bo{P}_S\bo{T})^+\bo{P}_S(\bo{H}\ddot{\bo{q}} + \bo{C}\dot{\bo{q}}+ \bo{g})
+			(\bo{P}_S\bo{T})^+\bo{P}_S(\bo{H}\ddot{\bo{q}}^* + \bo{C}\dot{\bo{q}}+ \bo{g})
 		\end{align}
 		
 		
