@@ -3,13 +3,15 @@
 * Lecture 1 - [https://github.com/SergeiSa/Contact-Aware-Control-Slides-Fall-2020/tree/main/Slides/Introduction](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Introduction)
 * Lecture 2 - [https://github.com/SergeiSa/Contact-Aware-Control-Slides-Fall-2020/tree/main/Slides/Constraints](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/MechanicalEquations)
 * Lecture 3 - [https://github.com/SergeiSa/Contact-Aware-Control-Slides-Fall-2020/tree/main/Slides/Mechanical_Equations_for_Systems_with_Constraints](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Projectors)
-* Lecture 4 - 
+* Lecture 4 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/InverseDynamics](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/InverseDynamics)
+* Lecture 5 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization)
 
 # Lecture videos
 
 * Lecture 1 - https://youtu.be/ntvMtCwxYpw
 * Lecture 2 - https://youtu.be/XR0qKmCDagw
 * Lecture 3 - https://youtu.be/MvPrVwuzY5g
+* Lecture 4 - https://youtu.be/i33tv_ag9XU
   
 # For contributors:
 
