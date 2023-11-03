@@ -3,7 +3,7 @@
 \input{settings.tex}
 
 
-\title{Linearization, Control}
+\title{Linearization, Orthogonal LQR}
 \subtitle{Contact-aware Control, Lecture 5}
 \author{by Sergei Savin}
 \centering
@@ -18,7 +18,14 @@
 \begin{frame}{Content}
 
 \begin{itemize}
-\item ***
+\item LTI system with explicit constraints
+\item Linear-fractional transformation
+\item LTI system with implicit constraints
+\item Linearization
+\item Orthogonal decomposition
+\item Orthogonal projection
+\item Feedback control
+\item LQR
 \end{itemize}
 
 \end{frame}
@@ -232,7 +239,7 @@
 		%
 			\begin{align}
 				\bo{N} = \text{null}(\bo{G}) \\
-				\bo{R} = \text{row}(\bo{G})
+				\bo{R} = \text{row}(\bo{G}) = \text{col}(\bo{G}\T)
 			\end{align}
 		
 		Since matrices $\bo{N}$ and $\bo{R}$ are orthogonal compliment of each other, the matrix $\begin{bmatrix}
@@ -356,14 +363,66 @@
 
 
 
-\begin{frame}{LQR}
+\begin{frame}{Orthogonal LQR}
 	% \framesubtitle{Parameter estimation}
 	\begin{flushleft}
 		
-		With that, we could pose LQR problem for the system 
+		With that, we could pose LQR problem for the system. For the dynamical system:
+		
+		\begin{equation}
+			\dot{\bo{z}}=\bo{A}_N\bo{z} +\bo{B}_N\bo{u}
+		\end{equation}
+		
+		find control that minimizes the next cost function:
+		
+		\begin{equation}
+			J = \int \left ( \bo{z}\T \bo{Q} \bo{z} + \bo{u}\T \bo{R} \bo{u} \right ) dt
+		\end{equation}
+		
+		the optimal control is linear control law:
+		
+		\begin{equation}
+			\bo{u}=-\bo{R}^{-1} \bo{B}_N^\top \bo{S} \bo{z}
+		\end{equation}
+		
+		where the control gain $\bo{K} = \bo{R}^{-1} \bo{B}_N^\top \bo{S}$ is obtained by solving algebraic Riccati equation:
+		
+		\begin{equation}
+			\bo{Q} - \bo{S} \bo{B}_N \bo{R}^{-1} \bo{B}_N^\top \bo{S} 
+			+ \bo{S} \bo{A}_N + \bo{A}_N^\top \bo{S} = 0
+		\end{equation}
+		
 		
 	\end{flushleft}
 \end{frame}
+
+
+
+\begin{frame}{LQR and Pole placement}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can consider LQR as a recipe of getting control gain $\bo{K}$:
+		
+		\begin{equation}
+			\bo{K} = \text{lqr}(\bo{A}_N, \bo{B}_N, \bo{Q}, \bo{R})
+		\end{equation}
+	
+		We can do the same with pole placement:
+		
+		\begin{equation}
+			\bo{K} = \text{place}(\bo{A}_N, \bo{B}_N, \bo{p})
+		\end{equation}
+	
+		where $\bo{p}$ are poles of the system.
+		
+		\bigskip
+		
+		The main outtake is that we can use standard control design methods from linear control. 
+		
+	\end{flushleft}
+\end{frame}
+
 
 
 
@@ -371,7 +430,10 @@
 	
 	\begin{itemize}
 		
-		\item ***
+		\item Mason, Sean, et al. "Balancing and walking using full dynamics LQR control with contact constraints." 2016 IEEE-RAS 16th International Conference on Humanoid Robots (Humanoids). IEEE, 2016. \bref{https://arxiv.org/pdf/1701.08179}{arxiv.org/pdf/1701.08179}
+		
+		\item Mason, Sean, Ludovic Righetti, and Stefan Schaal. "Full dynamics LQR control of a humanoid robot: An experimental study on balancing and squatting." 2014 IEEE-RAS International Conference on Humanoid Robots. IEEE, 2014. \bref{https://ieeexplore.ieee.org/abstract/document/7041387/}{ieeexplore.ieee.org/abstract/document/7041387/}
+		 
 		
 	\end{itemize}
 	

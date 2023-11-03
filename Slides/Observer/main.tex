@@ -1,0 +1,423 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{Orthogonal Observer}
+\subtitle{Contact-aware Control, Lecture 6}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item recap
+\item Observation
+\item Subspace representation
+\item Orthogonal Observer
+\item Separation Principle
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{recap - LTI system with constraints}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		LTI system with explicit constraints (EC-LTI) can be presented in the following form:
+		%
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}}=\bo{A}\bo{x}+\bo{B}\bo{u}+\bo{F}\lambda 
+				\\
+				\bo{G}\dot{\bo{x}}=0
+			\end{cases}
+		\end{equation}
+		
+		It is equivalent to LTI system with implicit constraints (IC-LTI):
+		%
+		\begin{equation}
+			\dot{\bo{x}}=\bo{A}_c\bo{x}+\bo{B}_c\bo{u}
+		\end{equation}
+	%
+	where $\bo{A}_c = (\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})\bo{A}$ and $\bo{B}_c = (\bo{I}-\bo{F}(\bo{G}\bo{F})^+\bo{G})\bo{B}$.
+	
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{recap - Orthogonal LQR}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We define $\bo{N} = \text{null}(\bo{G})$ and $\bo{R} = \text{col}(\bo{G}\T)$, giving us $\bo{x} = \bo{N}\bo{z}+\bo{R}\zeta$ and $\dot{\bo{x}} = \bo{N}\dot{\bo{z}}$. Multiplying the IC-LTI by $\bo{N}\T$ we get:
+		
+		\begin{equation}
+			\dot{\bo{z}}=\bo{N}\T\bo{A}_c(\bo{N}\bo{z}+\bo{R}\zeta)+\bo{N}\T\bo{B}_c\bo{u}
+		\end{equation}
+		
+		Orthogonal LQR is solved just as the regular one, but with different quadruple $(\textcolor{myred}{\bo{A}}, \textcolor{myblue}{\bo{B}}, \bo{Q}, \bo{R})$:
+		
+		\begin{equation}
+			\bo{K}_z = \text{lqr}(\textcolor{myred}{(\bo{N}\T\bo{A}_c\bo{N})}, \ \textcolor{myblue}{(\bo{N}\T\bo{B}_c)}, \ \bo{Q}_N, \ \bo{R})
+		\end{equation}
+		%
+		which minimizes the cost function:
+	
+		\begin{equation}
+			J = \int \left ( \bo{z}\T \bo{Q}_N \bo{z} + \bo{u}\T \bo{R} \bo{u} \right ) dt
+		\end{equation}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Observation}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can define IC-LTI with observation output $\bo{y}$:
+		%
+		\begin{equation}
+			\begin{cases}
+				\dot{\bo{x}}=\bo{A}_c\bo{x}+\bo{B}_c\bo{u}
+				\\
+				\bo{y} = \bo{C}\bo{x}
+			\end{cases}
+	\end{equation}
+
+	It can be observable or not; however, we can take advantage of the constraints to lower the number of states we need to observe.
+	
+	\bigskip
+	
+	As before, we multiply the dynamics by $\bo{N}\T$ and replace $\bo{x}$ by pair $(\bo{z}, \zeta)$:
+	%
+	\begin{equation}
+		\begin{cases}
+			\dot{\bo{z}}=\bo{N}\T\bo{A}_c\bo{N}\bo{z} + \bo{N}\T\bo{A}_c\bo{R}\zeta + \bo{N}\T\bo{B}_c\bo{u}
+			\\
+			\bo{y} = \bo{C}\bo{N}\bo{z} + \bo{C}\bo{R}\zeta
+		\end{cases}
+	\end{equation}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Subspace representation}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		We can re-write the dynamics in terms of the pair $(\bo{z}, \zeta)$:
+		%
+		\begin{equation}
+			\label{e_CLTI_z_zeta}
+			\begin{cases}
+				\begin{bmatrix}
+					\dot{\bo{z}} \\ \dot{\zeta}
+				\end{bmatrix} =
+				\begin{bmatrix}
+					\bo{N}\T\bo{A}_c\bo{N} & \bo{N}\T\bo{A}_c\bo{R}\\ 
+					\bo{0} & \bo{0}
+				\end{bmatrix}
+				\begin{bmatrix}
+					\bo{z} \\ \zeta
+				\end{bmatrix}
+				+
+				\begin{bmatrix}
+					\bo{N}\T\bo{B}_c\bo{u} \\ \bo{0}
+				\end{bmatrix} \\
+				\bo{y} = \bo{C} 
+				\begin{bmatrix}
+					\bo{N} & \bo{R}
+				\end{bmatrix}
+				\begin{bmatrix}
+					\bo{z} \\ \zeta
+				\end{bmatrix}
+			\end{cases}
+		\end{equation}
+		
+		We will call it \emph{subspace representation}.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Orthogonal Observer}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Using this representation we can propose the following state observer:
+		
+		\begin{equation*}
+			\begin{bmatrix}
+				\hat{\dot{\bo{z}}} \\ \dot{\hat{\zeta}}
+			\end{bmatrix} =
+			\begin{bmatrix}
+				\bo{N}\T\bo{A}_c\bo{N} & \bo{N}\T\bo{A}_c\bo{R}\\ 
+				\bo{0} & \bo{0}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\hat{\bo{z}} \\ \hat{\zeta}
+			\end{bmatrix}
+			+
+			\begin{bmatrix}
+				\bo{N}\T\bo{B}_c\bo{u} \\ \bo{0}
+			\end{bmatrix} 
+			+
+			\bo{L}
+			\left(\bo{y} - \bo{C} 
+			\begin{bmatrix}
+				\bo{N} & \bo{R}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\hat{\bo{z}} \\ \hat{\zeta}
+			\end{bmatrix}
+			\right),
+		\end{equation*}
+		%
+		where $\hat{\bo{z}}$ and $\hat{\zeta}$ are estimates of $\bo{z}$ and $\zeta$.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Orthogonal Observer - gain design}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		\begin{Theorem}
+			\label{SeparationPrinciple}
+			Orthogonal Observer and IC-LTI dynamics, with control law $\bo{u} = -\bo{K}_z \hat{\bo{z}} - \bo{K}_\zeta \hat{\zeta}$ form a stable system as the following condition: are satisfied:
+			%
+			\begin{equation}
+				\label{e_Observer_stability}
+				\begin{bmatrix}
+					\bo{N}\T \\ \bo{R}\T
+				\end{bmatrix}
+				\left(
+				\begin{bmatrix}\bo{A}_c\T\bo{N} \\ \bo{0}
+				\end{bmatrix}
+				- 
+				\bo{C}\T \bo{L}\T
+				\right)
+				\in \mathbb{H}
+			\end{equation}
+		\end{Theorem}
+	
+		Here we assume that $\bo{K}_z$ and $\bo{K}_\zeta$ are chosen such that:
+		%
+		\begin{align}
+			\bo{N}\T\bo{A}_c\bo{N} - \bo{N}\T\bo{B}_c\bo{K}_z \in \mathbb{H} \\
+			\bo{K}_\zeta = (\bo{N}\T\bo{B}_c)^+\bo{N}\T\bo{A}_c\bo{R}
+		\end{align}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Separation Principle, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Defining observation error 
+		$\bo{e} = 
+		\begin{bmatrix}
+			\bo{z} - \hat{\bo{z}} \\ \zeta - \hat{\zeta}
+		\end{bmatrix}$
+		and subtracting observer from system dynamics we get observer error dynamics:
+		%
+		\begin{equation*}
+			\begin{cases}
+				\begin{bmatrix}
+					\dot{\bo{z}} \\ \dot{\zeta}
+				\end{bmatrix} =
+				\textcolor{myred}
+				{\begin{bmatrix}
+					\bo{N}\T\bo{A}_c\bo{N} & \bo{N}\T\bo{A}_c\bo{R}\\ 
+					\bo{0} & \bo{0}
+				\end{bmatrix}}
+				\begin{bmatrix}
+					\bo{z} \\ \zeta
+				\end{bmatrix}
+				+
+				\textcolor{myblue}
+				{\begin{bmatrix}
+					\bo{N}\T\bo{B}_c\bo{u} \\ \bo{0}
+				\end{bmatrix}} \\
+				\bo{y} = 
+				\textcolor{mydarkgreen}
+				{\bo{C} 
+				\begin{bmatrix}
+					\bo{N} & \bo{R}
+				\end{bmatrix}}
+				\begin{bmatrix}
+					\bo{z} \\ \zeta
+				\end{bmatrix}
+			\end{cases}
+		\end{equation*}
+		%
+		\begin{equation*}
+			\begin{bmatrix}
+				\hat{\dot{\bo{z}}} \\ \dot{\hat{\zeta}}
+			\end{bmatrix} =
+		\textcolor{myred}
+			{\begin{bmatrix}
+				\bo{N}\T\bo{A}_c\bo{N} & \bo{N}\T\bo{A}_c\bo{R}\\ 
+				\bo{0} & \bo{0}
+			\end{bmatrix}}
+			\begin{bmatrix}
+				\hat{\bo{z}} \\ \hat{\zeta}
+			\end{bmatrix}
+			+
+			\textcolor{myblue}
+			{\begin{bmatrix}
+				\bo{N}\T\bo{B}_c\bo{u} \\ \bo{0}
+			\end{bmatrix} }
+			+
+			\bo{L}
+			\left(\bo{y} - 
+			\textcolor{mydarkgreen}
+			{\bo{C} 
+			\begin{bmatrix}
+				\bo{N} & \bo{R}
+			\end{bmatrix}}
+			\begin{bmatrix}
+				\hat{\bo{z}} \\ \hat{\zeta}
+			\end{bmatrix}
+			\right),
+		\end{equation*}
+		%
+		\begin{equation}
+			\label{e_Observer_error}
+			\dot{\bo{e}} =
+			\left(
+			\textcolor{myred}
+			{\begin{bmatrix}
+				\bo{N}\T\bo{A}_c\bo{N} & \bo{N}\T\bo{A}_c\bo{R}\\ 
+				\bo{0} & \bo{0}
+			\end{bmatrix}}
+			-
+			\bo{L}
+			\textcolor{mydarkgreen}
+			{\bo{C} 
+			\begin{bmatrix}
+				\bo{N} & \bo{R}
+			\end{bmatrix}}
+			\right)
+			\bo{e}
+		\end{equation}
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Separation Principle, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Substituting control law, we find state dynamics as:
+		
+		\begin{align*}
+			\dot{\bo{z}} &= 
+			(\bo{N}\T\bo{A}_c\bo{N} - \bo{N}\T\bo{B}_c 
+			\bo{K}_z) \bo{z}
+			+
+			\\
+			&+
+			\bo{N}\T\bo{B}_c\bo{K}
+			\bo{e}
+			+ (\bo{N}\T\bo{A}_c\bo{R}
+			- \bo{N}\T\bo{B}_c \bo{K}_\zeta) \zeta.
+		\end{align*}
+		%
+		where $\bo{K} = \begin{bmatrix}
+			\bo{K}_z & \bo{K}_\zeta
+		\end{bmatrix}$.
+		
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Separation Principle, 3}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		
+		With that we can write the combined state and observer dynamics:
+		
+		\begin{equation}
+			\label{e_ObserverError_State}
+			\begin{bmatrix}
+				\dot{\bo{z}} \\ \dot{\bo{e}}
+			\end{bmatrix} 
+			= 
+			\begin{bmatrix}
+				(\bo{N}\T\bo{A}_c\bo{N} - \bo{N}\T\bo{B}_c 
+				\bo{K}_z) & \bo{N}\T\bo{B}_c\bo{K} \\
+				\bo{0} & (\bar{\bo{N}}\T\bo{A}_c - \bo{L}\bo{C})\bo{E}
+			\end{bmatrix}
+			\begin{bmatrix}
+				\bo{z} \\ \bo{e}
+			\end{bmatrix} 
+			+
+			\text{const}
+		\end{equation}
+		%
+		where 
+		$\bar{\bo{N}} = \begin{bmatrix}
+			\bo{N} & \bo{0}_{n \times n}
+		\end{bmatrix}$, 
+		and
+		$\bo{E} = \begin{bmatrix}
+			\bo{N} & \bo{R}
+		\end{bmatrix}$. 
+	%
+		Since the state matrix here is upper triangular, we only need the diagonal blocks $(\bo{N}\T\bo{A}_c\bo{N} - \bo{N}\T\bo{B}_c\bo{K}_z)$ and $(\bar{\bo{N}}\T\bo{A}_c - \bo{L}\bo{C})\bo{E}$ to be stable for the system to be stable. Transpose of the last one gives us proof of the theorem. $\qed$
+		
+		\bigskip
+		
+		Note that we derived a \emph{separation principle} for the system with constraints.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Read more}
+	
+	\begin{itemize}
+		
+		\item \bref{https://www.mdpi.com/1424-8220/21/18/6312}{Savin, S., Balakhnov, O., Khusainov, R. and Klimchik, A., 2021. State observer for linear systems with explicit constraints: Orthogonal decomposition method. Sensors, 21(18), p.6312}
+		
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\myqrframe
+
+\end{document}

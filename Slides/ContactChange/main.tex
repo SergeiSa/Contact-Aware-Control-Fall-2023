@@ -1,0 +1,322 @@
+\documentclass{beamer}
+
+\input{settings.tex}
+
+
+\title{Change of Contact}
+\subtitle{Contact-aware Control, Lecture 9}
+\author{by Sergei Savin}
+\centering
+\date{\mydate}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame}{Content}
+
+\begin{itemize}
+\item Point contact and unilateral constraints
+\item Outside of friction cone
+\item Sliding friction
+\item Breaking contact
+\item Complementarity - frictionless case
+\item Acquiring contact - impact
+\item Impact and walking
+\item Changing contact on schedule
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Point contact and unilateral constraints}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Let us consider unilateral point contact - a constraint $\bo{r}(\bo{q}) = 0$, where $\bo{r} \in \R^3$, with associated constraint jacobian $\bo{J} = \frac{\partial \bo{r}}{\partial \bo{q}}$ and reaction force $\bo{f} \in \R^3$.
+		
+		\bigskip
+		
+		Reaction force lies in a friction cone $\bo{f} \in \mathcal{C}$, with normal direction $\bo{n}$ and friction coefficient $\mu$.
+		
+		\bigskip
+		
+		We refer to such contact / constraint \emph{unilateral} because its associated reaction force can "push" but not "pull" on the support surface.
+		
+	\end{flushleft}
+\end{frame}
+
+
+\begin{frame}{Outside of friction cone}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		There are a few basic scenarios of how a friction force can be broken:
+		
+		\begin{enumerate}
+			\item Friction force (tangent component of the reaction force) can lie on the boundary of the friction cone leading to sliding. Length of the friction force is equal to $\mu \bo{n}\T \bo{f}$, motion in tangent direction becomes possible.
+			
+			\item Normal force can become zero, allowing the contact to be broken.
+		\end{enumerate}
+	
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Sliding friction}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		In general, it is good to assume that accurate modeling of sliding regime for dry friction is hard. Possible models include Coulomb friction, "stiction" and others.
+		
+		\bigskip
+		
+		Accuracy of a static dry friction model is relatively stable for all hard surfaces. Sliding friction model on the other hand will not only radically change for any new surface, but also will be influenced by orientation of the surface and other small-scale details, hard to account for.
+		
+		\bigskip
+		
+		A rule of thumb is to avoid building precise model-based control schemes that require sliding.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Breaking contact}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Breaking contact occurs when the normal reaction goes to zero and point of contact acquires acceleration projection onto the surface normal.
+		
+		\bigskip
+		
+		To describe the process of acquiring and breaking contact (locally) we can use \emph{complementarity} constraint:
+		
+		\begin{align}
+			\begin{cases}
+				f_n r_n = 0 \\
+				f_n \geq 0 \\
+				r_n \geq 0
+			\end{cases}
+		\end{align}
+		
+		where $f_n = \bo{n}\T\bo{f}$ and $r_n =\bo{n}\T\bo{r}$. We can describe this constraint in the following way: either $f_n = 0$ and then $r_n$ can assume any positive number, meaning the contact can be broken; or $r_n = 0$, contact is maintained and therefore normal reaction force is positive.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Complementarity - frictionless case}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Consider the case when full reaction force at an $i$-th contact point is equal to normal reaction force: $\bo{f}_i = \bo{f}_{n,i} = f_{n,i} \bo{n}_i$. Then generalized constraint $\bo{f}$ is constructed by concatenation:
+		%
+		\begin{align}
+			\phi = \begin{bmatrix}
+				\bo{n}_1\T \left(\bo{r}_1(\bo{q}) - \bo{r}_1^0 \right) \\
+				... \\
+				\bo{n}_m\T \left(\bo{r}_m(\bo{q}) - \bo{r}_m^0 \right)
+			\end{bmatrix}
+		= 0
+		\end{align}
+		
+		In this case complementarity constraint becomes:
+		%
+		\begin{align}
+			\begin{cases}
+				\phi\T \lambda \geq 0 \\
+				\phi \geq 0 \\
+				\lambda \geq 0
+			\end{cases}
+		\end{align}
+		
+		As we can see, this formulation includes all constraints (all contact points) at the same time, and can be directly used in conjunction with manipulator equations.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Acquiring contact - impact}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Acquiring contact can mean fast (mathematically - instantaneous) change of momentum (generalized momentum) for the mechanical system. This is called \emph{collision}.
+		
+		\bigskip
+		
+		Simple models of collision include \emph{inelastic collision} (some of the energy is lost during the collision) and \emph{elastic collision} (energy is conserved).
+		
+		\bigskip
+		
+		For a 1-dimensional point-mass the inelastic collision is described with the use of \emph{coefficient of restitution} $\xi$:
+		
+		\begin{equation}
+			v^+ = -\xi v^-
+		\end{equation}
+		%
+		where $v^-$ and $v^+$ are velocity of the point-mass before and after the collision.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Impact and walking, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		During walking, contact has to be acquired (when the foot lands on the ground). Assuming point foot with coordinates $\bo{r}_f = \bo{r}_f(\bo{q})$, stepping on a foothold $\bo{r}_0$ and normal to the supporting surface $\bo{n}$, we can observe that:
+		
+		\bigskip
+		
+		\begin{itemize}
+			\item Before the step (before impact) $\bo{d} = \bo{r}_f(\bo{q}) - \bo{r}_f^0 \neq 0$ the velocity of the foot is non-zero: $\dot{\bo{r}}_f \neq 0$. 
+			
+			\item After the step (after impact) $\bo{r}_f(\bo{q}) = \bo{r}_f^0$ the velocity of the foot is zero: $\dot{\bo{r}}_f = 0$. 
+		\end{itemize}
+	
+		If on the point of impact $\dot{\bo{r}}_f \neq 0$, an inelastic collision will take place, with "instantaneous" change of velocity.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Impact and walking, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Assume that impact took place at the moment of time $t_1$. We will describe velocity right before the impact as $\dot{\bo{r}}_f^-$ and right after the impact as $\dot{\bo{r}}_f^+$:
+		
+		\begin{align}
+			\dot{\bo{r}}_f^- = \lim_{\Delta t \to (-0)} \bo{J}_f \dot{\bo{q}}(t+\Delta t)
+			\\
+			\dot{\bo{r}}_f^+ = \lim_{\Delta t \to (+0)} \bo{J}_f \dot{\bo{q}}(t+\Delta t)
+		\end{align}
+		%
+		where $\dot{\bo{r}}_f  = \frac{\partial \bo{r}_f}{\partial \bo{q}} \dot{\bo{q}} = \bo{J}_f\dot{\bo{q}}$. As we can see, instantaneous change from $\dot{\bo{r}}_f^-$ to $\dot{\bo{r}}_f^+$ implies instantaneous change in generalized velocity:
+		%
+		\begin{align}
+			\dot{\bo{q}}^- = \lim_{\Delta t \to (-0)}  \dot{\bo{q}}(t+\Delta t)
+			\\
+			\dot{\bo{q}}^+ = \lim_{\Delta t \to (+0)} \dot{\bo{q}}(t+\Delta t)
+		\end{align}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+\begin{frame}{Impact and walking, 3}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		If $\dot{\bo{r}}_f^+ = 0$ and $\dot{\bo{r}}_f^- \neq 0$ it implies instantaneous change from $\dot{\bo{q}}^-$ to $\dot{\bo{q}}^+$. This can be done with an impact model:
+		%
+		\begin{equation}
+			\dot{\bo{q}}^+ = \bo{h}( \dot{\bo{q}}^-)
+		\end{equation}
+	
+		Alternatively, if $\dot{\bo{r}}_f^- = 0$, there is no need for an instantaneous change in generalized velocity. This can be achieved with, e.g. s-like curve ($n$-th degree polynomial):
+		%
+		\begin{align}
+			\bo{r}_f(\bo{q}(t)) = \sum_{p=0}^{n} a_p t^p \\
+			\sum_{p=0}^{n} \left( a_p t_1^p \right) = \bo{r}_0 \\
+			\sum_{p=1}^{n} \left(p a_p t_1^{p-1} \right) = 0
+		\end{align}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+
+\begin{frame}{Changing contact on schedule, 1}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		Assume that during the time interval $t_0 < t < t_1$ contact is described by constraint $\phi(\bo{q}) = 0$, while during the time interval $t_1 < t < t_2$ contact is described by constraint $\psi(\bo{q}) = 0$. Dynamics then is described by separate sets of equations during different time intervals:
+		
+		\begin{align}
+			\begin{bmatrix}
+				\bo{H} & -\bo{J}_1\T \\
+				\bo{J}_1 & 0
+			\end{bmatrix}
+			\begin{bmatrix}
+				\ddot{\bo{q}} \\
+				\lambda_1
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				\tau - \bo{C} \dot{\bo{q}} - \bo{g} \\
+				-\dot{\bo{J}}_1 \dot{\bo{q}}
+			\end{bmatrix} & \ \ \  \text{if} \ \ \  t_0 < t < t_1
+			\\
+			\begin{bmatrix}
+				\bo{H} & -\bo{J}_2\T \\
+				\bo{J}_2 & 0
+			\end{bmatrix}
+			\begin{bmatrix}
+				\ddot{\bo{q}} \\
+				\lambda_2
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				\tau - \bo{C} \dot{\bo{q}} - \bo{g} \\
+				-\dot{\bo{J}}_2 \dot{\bo{q}}
+			\end{bmatrix} &\ \ \  \text{if} \ \ \  t_1 < t < t_2
+		\end{align}
+		%
+		where $\bo{J}_1 = \partial \phi / \partial \bo{q}$ and $\bo{J}_2 = \partial \psi / \partial \bo{q}$.
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+\begin{frame}{Changing contact on schedule, 2}
+	% \framesubtitle{Parameter estimation}
+	\begin{flushleft}
+		
+		There are a number of observations to be made here:
+		
+		\begin{itemize}
+			\item $\phi$ and $\psi$ may have different dimensions (and hence $\bo{J}_1$ and $\bo{J}_2$, as well as $\lambda_1$ and $\lambda_2$).
+			
+			\item This model does not describe the moment of change of contact. It can be described by a separate equation, e.g. by a collision equation.
+			
+			\item Walking implies change of contact - periodic loss of contact (foot lifted off the ground) and acquisition of contact (foot lands on the ground).
+		\end{itemize}
+		
+	\end{flushleft}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Read more}
+	\begin{itemize}
+		\item Posa, M., Cantu, C. and Tedrake, R., 2014. A direct method for trajectory optimization of rigid bodies through contact. The International Journal of Robotics Research, 33(1), pp.69-81. \bref{https://dspace.mit.edu/bitstream/handle/1721.1/90907/Tedrake\_A\%20direct\%20method.pdf?sequence=1\&isAllowed=y}{dspace.mit.edu/bitstream/handle/1721.1/90907/Tedrake}.
+		
+		 
+	\end{itemize}
+\end{frame}
+
+
+
+\myqrframe
+
+\end{document}
