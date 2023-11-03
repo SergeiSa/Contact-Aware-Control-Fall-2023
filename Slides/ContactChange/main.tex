@@ -115,7 +115,7 @@
 	% \framesubtitle{Parameter estimation}
 	\begin{flushleft}
 		
-		Consider the case when full reaction force at an $i$-th contact point is equal to normal reaction force: $\bo{f}_i = \bo{f}_{n,i} = f_{n,i} \bo{n}_i$. Then generalized constraint $\bo{f}$ is constructed by concatenation:
+		Consider the case when full reaction force at an $i$-th contact point is equal to normal reaction force: $\bo{f}_i = \bo{f}_{n,i} = f_{n,i} \bo{n}_i$. Then generalized constraint $\phi$ is constructed by concatenation:
 		%
 		\begin{align}
 			\phi = \begin{bmatrix}
@@ -130,7 +130,7 @@
 		%
 		\begin{align}
 			\begin{cases}
-				\phi\T \lambda \geq 0 \\
+				\phi\T \lambda = 0 \\
 				\phi \geq 0 \\
 				\lambda \geq 0
 			\end{cases}

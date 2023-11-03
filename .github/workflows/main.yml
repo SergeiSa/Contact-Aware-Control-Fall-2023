@@ -38,26 +38,99 @@ jobs:
           root_file: main.tex
           working_directory: Slides/Projectors/
 
+      - name: Compile LaTeX document InverseDynamics
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/InverseDynamics/
+
+      - name: Compile LaTeX document Linearization
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/Linearization/
+
+      - name: Compile LaTeX document Observer
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/Observer/
+
+      - name: Compile LaTeX document ConesGeometry
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/ConesGeometry/
+
+      - name: Compile LaTeX document FrictionCone
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/FrictionCone/
+
+      - name: Compile LaTeX document ContactChange
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/ContactChange/
+
+
+
 
 
       - name: Save Introduction artifact
         uses: actions/upload-artifact@v1
         with:
           name: Introduction.pdf
-          path: Slides/Introduction/main.pdf 
+          path: Slides/Introduction/main.pdf
 
       - name: Save MechanicalEquations artifact
         uses: actions/upload-artifact@v1
         with:
           name: MechanicalEquations.pdf
-          path: Slides/MechanicalEquations/main.pdf 
+          path: Slides/MechanicalEquations/main.pdf
 
       - name: Save Projectors
         uses: actions/upload-artifact@v1
         with:
           name: Projectors.pdf
-          path: Slides/Projectors/main.pdf      
+          path: Slides/Projectors/main.pdf
 
+      - name: Save InverseDynamics
+        uses: actions/upload-artifact@v1
+        with:
+          name: InverseDynamics.pdf
+          path: Slides/InverseDynamics/main.pdf
+
+      - name: Save Linearization
+        uses: actions/upload-artifact@v1
+        with:
+          name: Linearization.pdf
+          path: Slides/Linearization/main.pdf
+
+      - name: Save Observer
+        uses: actions/upload-artifact@v1
+        with:
+          name: Observer.pdf
+          path: Slides/Observer/main.pdf
+
+      - name: Save ConesGeometry
+        uses: actions/upload-artifact@v1
+        with:
+          name: ConesGeometry.pdf
+          path: Slides/ConesGeometry/main.pdf
+
+      - name: Save FrictionCone
+        uses: actions/upload-artifact@v1
+        with:
+          name: FrictionCone.pdf
+          path: Slides/FrictionCone/main.pdf
+
+      - name: Save ContactChange
+        uses: actions/upload-artifact@v1
+        with:
+          name: ContactChange.pdf
+          path: Slides/ContactChange/main.pdf
 
 
 
@@ -69,7 +142,14 @@ jobs:
           git add Slides/Introduction/main.pdf
           git add Slides/MechanicalEquations/main.pdf
           git add Slides/Projectors/main.pdf
-          
+          git add Slides/InverseDynamics/main.pdf
+          git add Slides/Linearization/main.pdf
+          git add Slides/Observer/main.pdf
+          git add Slides/ConesGeometry/main.pdf
+          git add Slides/FrictionCone/main.pdf
+          git add Slides/ContactChange/main.pdf
+
+
           git commit -m "Update compiled PDFs"
           git push
 
