@@ -5,6 +5,10 @@
 * Lecture 3 - [https://github.com/SergeiSa/Contact-Aware-Control-Slides-Fall-2020/tree/main/Slides/Mechanical_Equations_for_Systems_with_Constraints](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Projectors)
 * Lecture 4 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/InverseDynamics](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/InverseDynamics)
 * Lecture 5 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization)
+* Lecture 6 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Observer](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Observer)
+* Lecture 7 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ConesGeometry](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ConesGeometry)
+* Lecture 7 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone)
+* Lecture 8 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange)
 
 # Lecture videos
 
