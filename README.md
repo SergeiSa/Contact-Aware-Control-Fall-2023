@@ -7,8 +7,8 @@
 * Lecture 5 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Linearization)
 * Lecture 6 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Observer](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/Observer)
 * Lecture 7 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ConesGeometry](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ConesGeometry)
-* Lecture 7 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone)
-* Lecture 8 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange)
+* Lecture 8 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/FrictionCone)
+* Lecture 9 - [https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange](https://github.com/SergeiSa/Contact-Aware-Control-Fall-2023/tree/main/Slides/ContactChange)
 
 # Lecture videos
 
