@@ -16,6 +16,8 @@
 * Lecture 2 - https://youtu.be/XR0qKmCDagw
 * Lecture 3 - https://youtu.be/MvPrVwuzY5g
 * Lecture 4 - https://youtu.be/i33tv_ag9XU
+* Lecture 5 - https://youtu.be/QkxFN5qGzj4
+* Lecture 6 - https://youtu.be/iH_O7wxO9R4
   
 # For contributors:
 
