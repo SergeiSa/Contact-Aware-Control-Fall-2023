@@ -20,6 +20,7 @@
 * Lecture 6 - https://youtu.be/iH_O7wxO9R4
 * Lecture 7 - https://youtu.be/NCTez5oW67U
 * Lecture 8 - https://youtu.be/VcliHXszawg
+* Lecture 9 - https://youtu.be/k28mxiHtVEU
   
 # For contributors:
 
