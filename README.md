@@ -21,6 +21,8 @@
 * Lecture 7 - https://youtu.be/NCTez5oW67U
 * Lecture 8 - https://youtu.be/VcliHXszawg
 * Lecture 9 - https://youtu.be/k28mxiHtVEU
+* Lecture 10 - https://youtu.be/z5YAPKFZgqs
+* Lecture 11 - https://youtu.be/CFhy-n3aaNw
   
 # For contributors:
 
