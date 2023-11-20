@@ -74,6 +74,17 @@ jobs:
           root_file: main.tex
           working_directory: Slides/ContactChange/
 
+      - name: Compile LaTeX document Gaits
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/Gaits/
+
+      - name: Compile LaTeX document MPC
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: main.tex
+          working_directory: Slides/MPC/
 
 
 
@@ -132,6 +143,21 @@ jobs:
           name: ContactChange.pdf
           path: Slides/ContactChange/main.pdf
 
+      - name: Save Gaits
+        uses: actions/upload-artifact@v1
+        with:
+          name: Gaits.pdf
+          path: Slides/Gaits/main.pdf
+
+      - name: Save MPC
+        uses: actions/upload-artifact@v1
+        with:
+          name: MPC.pdf
+          path: Slides/MPC/main.pdf
+
+
+
+
 
 
       - name: Update compiled PDFs in git repository
@@ -148,6 +174,8 @@ jobs:
           git add Slides/ConesGeometry/main.pdf
           git add Slides/FrictionCone/main.pdf
           git add Slides/ContactChange/main.pdf
+          git add Slides/Gaits/main.pdf
+          git add Slides/MPC/main.pdf
 
 
           git commit -m "Update compiled PDFs"
